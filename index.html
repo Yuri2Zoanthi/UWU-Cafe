@@ -210,7 +210,8 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:13px 10p
 
 <script>
 // ==========================================
-// ฐานข้อมูล Supabase Online Realtime (อิงจาก 77 STAR)
+// ฐานข้อมูล Supabase Online Realtime (แยกตารางจาก 77 STAR แล้ว)
+// ใช้ Table: uwu_tables, uwu_menus, uwu_orders
 // ==========================================
 window.SUPABASE_CONFIG = {
   url: "https://vehsmnstxrdzcrsrsgzr.supabase.co",
@@ -221,11 +222,11 @@ let sb = null;
 if (window.SUPABASE_CONFIG.url && window.supabase) {
   sb = supabase.createClient(window.SUPABASE_CONFIG.url, window.SUPABASE_CONFIG.publishableKey);
   
-  // สร้าง Realtime Listener
+  // สร้าง Realtime Listener เฉพาะของ uwu
   sb.channel('uwu-realtime')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'tables' }, () => refreshAll())
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'menus' }, () => refreshAll())
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => refreshAll())
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'uwu_tables' }, () => refreshAll())
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'uwu_menus' }, () => refreshAll())
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'uwu_orders' }, () => refreshAll())
     .subscribe();
 } else {
   document.getElementById('offlineIndicator').style.display = 'inline-block';
@@ -234,28 +235,28 @@ if (window.SUPABASE_CONFIG.url && window.supabase) {
 // Data Arrays
 let tables = [], menus = [], orders = [], staff = [], completedOrders = [];
 
-// Helper Storage DB Functions (Online/Offline Support)
+// Helper Storage DB Functions (อิงชื่อ table ที่ถูกส่งเข้ามาเลย เช่น 'uwu_tables')
 async function dbGet(table) {
-  if(!sb) return JSON.parse(localStorage.getItem('uwu_'+table)||'[]');
+  if(!sb) return JSON.parse(localStorage.getItem(table)||'[]');
   let {data, error} = await sb.from(table).select('*').order('id');
-  if(error) { console.error(error); document.getElementById('offlineIndicator').style.display='inline-block'; return JSON.parse(localStorage.getItem('uwu_'+table)||'[]'); }
+  if(error) { console.error(error); document.getElementById('offlineIndicator').style.display='inline-block'; return JSON.parse(localStorage.getItem(table)||'[]'); }
   document.getElementById('offlineIndicator').style.display='none';
   return data || [];
 }
 async function dbInsert(table, row) {
-  if(!sb) { let a = await dbGet(table); row.id = Date.now(); a.push(row); localStorage.setItem('uwu_'+table, JSON.stringify(a)); return row; }
+  if(!sb) { let a = await dbGet(table); row.id = Date.now(); a.push(row); localStorage.setItem(table, JSON.stringify(a)); return row; }
   let {data, error} = await sb.from(table).insert(row).select().single();
   if(error) { alert(error.message); return null; }
   return data;
 }
 async function dbUpdate(table, id, row) {
-  if(!sb) { let a = await dbGet(table); a = a.map(x => x.id === id ? {...x,...row} : x); localStorage.setItem('uwu_'+table, JSON.stringify(a)); return true; }
+  if(!sb) { let a = await dbGet(table); a = a.map(x => x.id === id ? {...x,...row} : x); localStorage.setItem(table, JSON.stringify(a)); return true; }
   let {error} = await sb.from(table).update(row).eq('id', id);
   if(error) { alert(error.message); return false; }
   return true;
 }
 async function dbDelete(table, id) {
-  if(!sb) { let a = await dbGet(table); a = a.filter(x => x.id !== id); localStorage.setItem('uwu_'+table, JSON.stringify(a)); return true; }
+  if(!sb) { let a = await dbGet(table); a = a.filter(x => x.id !== id); localStorage.setItem(table, JSON.stringify(a)); return true; }
   let {error} = await sb.from(table).delete().eq('id', id);
   if(error) { alert(error.message); return false; }
   return true;
@@ -263,11 +264,11 @@ async function dbDelete(table, id) {
 
 // Data Fetch & Parse
 async function refreshAll() {
-  const rawTables = await dbGet('tables');
-  const rawMenus = await dbGet('menus');
-  const rawOrders = await dbGet('orders');
+  const rawTables = await dbGet('uwu_tables');
+  const rawMenus = await dbGet('uwu_menus');
+  const rawOrders = await dbGet('uwu_orders');
 
-  // Map Tables (ใช้ ID ของฐานข้อมูล และคำนวณสถานะจาก Order)
+  // Map Tables
   tables = rawTables.map(t => {
     let hasOrder = rawOrders.find(o => o.table_id === t.id && (o.status === 'กำลังทำ' || o.status === 'พร้อมเสิร์ฟ' || o.status === 'รออาหาร'));
     return {
@@ -277,7 +278,7 @@ async function refreshAll() {
     };
   });
 
-  // Map Menus (ใช้ Description เก็บเป็น JSON สำหรับความน่ารัก)
+  // Map Menus
   menus = rawMenus.map(m => {
     let extra = { cat: 'ขนมหวาน', icon: '🍰', image: '' };
     try { if (m.description && m.description.startsWith('{')) extra = JSON.parse(m.description); } catch(e){}
@@ -301,13 +302,10 @@ async function refreshAll() {
       try { staff = JSON.parse(o.items || '[]'); foundStaff = true; } catch(e){}
       return;
     }
-    // Skip 77 STAR System logs if any
-    if (o.status === 'CLOCK_LOG' || o.status === 'STAFF_LIST' || o.status === 'DAILY_SETTLEMENT' || o.status === 'MANAGER_PWD') return;
 
     let itemsArr = [];
     try { itemsArr = JSON.parse(o.items || '[]'); } catch(e){}
     
-    // แปลงรูปแบบ Items สำหรับแสดงผลน่ารักๆ ของ UWU
     let itemsText = itemsArr.map(it => `${it.name} ×${it.qty}`).join(', ');
     
     let tableObj = tables.find(t => t.dbId === o.table_id);
@@ -320,7 +318,7 @@ async function refreshAll() {
       table: tableName,
       items: itemsText,
       total: o.total,
-      status: o.status === 'รออาหาร' ? 'กำลังทำ' : o.status, // ผสานสถานะกับ 77
+      status: o.status === 'รออาหาร' ? 'กำลังทำ' : o.status,
       date: o.created_at ? new Date(o.created_at).toISOString().slice(0,10) : todayISO()
     };
 
@@ -333,7 +331,6 @@ async function refreshAll() {
   });
 
   if (!foundStaff && staff.length === 0) {
-    // พนักงานเริ่มต้นถ้าฐานข้อมูลเพิ่งสร้าง
     staff = [
       { name: "Mimi", role: "ผู้จัดการ", status: "กำลังทำงาน", attendance: "เข้าเวร", attendanceTime: "-" },
       { name: "Mochi", role: "พนักงานเสิร์ฟ", status: "กำลังทำงาน", attendance: "เข้าเวร", attendanceTime: "-" }
@@ -377,23 +374,23 @@ function renderOrders(){
 async function changeStatus(i, value){
   const o = orders[i];
   if(value === "เสร็จแล้ว"){
-    await dbUpdate('orders', o.dbId, { status: "จบงาน" }); // Map กับ 'จบงาน' ของ 77 STAR
+    await dbUpdate('uwu_orders', o.dbId, { status: "จบงาน" });
   } else if (value === "ยกเลิก") {
     if(confirm("ต้องการยกเลิกและลบออเดอร์นี้ใช่ไหม?")) {
-      await dbDelete('orders', o.dbId);
+      await dbDelete('uwu_orders', o.dbId);
     } else {
       renderOrders(); // Revert
       return;
     }
   } else {
-    await dbUpdate('orders', o.dbId, { status: value });
+    await dbUpdate('uwu_orders', o.dbId, { status: value });
   }
   refreshAll();
 }
 
 async function deleteOrder(dbId){
   if(confirm("ต้องการลบออเดอร์นี้ใช่ไหม 🐱?")) {
-    await dbDelete('orders', dbId);
+    await dbDelete('uwu_orders', dbId);
     refreshAll();
   }
 }
@@ -442,7 +439,6 @@ async function confirmNewOrder(){
   
   const total = currentOrderItems.reduce((s,item)=>s+item.price*item.qty,0);
   
-  // Format JSON กลับไปเก็บที่ Data แบบเดียวกับ 77 STAR
   const itemsFormatForDb = currentOrderItems.map(it => ({
     menu_id: it.dbId, name: it.name, price: it.price, qty: it.qty
   }));
@@ -454,7 +450,7 @@ async function confirmNewOrder(){
     status: 'กำลังทำ'
   };
 
-  await dbInsert('orders', row);
+  await dbInsert('uwu_orders', row);
   closeOrderModal();
   refreshAll();
 }
@@ -506,9 +502,9 @@ async function saveMenu(){
   let extraDesc = JSON.stringify({ cat: c, icon: c==="เครื่องดื่ม"?"🧋":"🍰", image: img });
   
   if (editingMenuDbId !== -1) {
-    await dbUpdate('menus', editingMenuDbId, { name: n, price: p, description: extraDesc });
+    await dbUpdate('uwu_menus', editingMenuDbId, { name: n, price: p, description: extraDesc });
   } else {
-    await dbInsert('menus', { name: n, price: p, description: extraDesc });
+    await dbInsert('uwu_menus', { name: n, price: p, description: extraDesc });
   }
   closeMenuModal();
   refreshAll();
@@ -516,7 +512,7 @@ async function saveMenu(){
 
 async function deleteMenu(dbId){
   if(confirm("ลบเมนูนี้ใช่ไหม?")){
-    await dbDelete('menus', dbId);
+    await dbDelete('uwu_menus', dbId);
     refreshAll();
   }
 }
@@ -528,30 +524,30 @@ function renderTables(){
 }
 async function addTable(){
   let newName = "T" + String(tables.length+1).padStart(2,"0");
-  await dbInsert('tables', { name: newName });
+  await dbInsert('uwu_tables', { name: newName });
   refreshAll();
 }
 async function deleteTable(dbId){
   if(confirm("ต้องการลบโต๊ะนี้ทิ้งใช่ไหม?")){
-    await dbDelete('tables', dbId);
+    await dbDelete('uwu_tables', dbId);
     refreshAll();
   }
 }
 
-// พนักงาน (ใช้วิธีจัดเก็บแบบ JSON ลงในตาราง orders.status = 'UWU_STAFF')
+// พนักงาน
 function renderStaff(){
   const e=document.getElementById("staffTable");
   e.innerHTML=staff.map((s,i)=>`<tr><td>${s.name}</td><td>${s.role}</td><td><select class="status-select" onchange="changeStaffStatus(${i},this.value)"><option value="กำลังทำงาน" ${s.status==="กำลังทำงาน"?"selected":""}>🟢 กำลังทำงาน</option><option value="พัก" ${s.status==="พัก"?"selected":""}>🟡 พัก</option><option value="ลา" ${s.status==="ลา"?"selected":""}>🔴 ลา</option></select></td><td><select class="status-select" onchange="changeAttendance(${i},this.value)"><option value="ยังไม่เข้าเวร" ${(!s.attendance||s.attendance==="ยังไม่เข้าเวร")?"selected":""}>⚪ ยังไม่เข้าเวร</option><option value="เข้าเวร" ${s.attendance==="เข้าเวร"?"selected":""}>🟢 เข้าเวร</option><option value="ออกเวร" ${s.attendance==="ออกเวร"?"selected":""}>🔵 ออกเวร</option><option value="ลา" ${s.attendance==="ลา"?"selected":""}>🔴 ลา</option></select><div class="shift-time">${s.attendanceTime||"-"}</div></td><td class="staff-row-actions"><button class="btn edit-staff-btn" onclick="openStaffModal(${i})">แก้ไข</button><button class="btn danger" onclick="removeStaff(${i})">ลบ</button></td></tr>`).join("");
 }
 
 async function syncStaffToDb() {
-  const staffLogs = await dbGet('orders');
+  const staffLogs = await dbGet('uwu_orders');
   const staffRow = staffLogs.find(o => o.status === 'UWU_STAFF');
   
   if (staffRow) {
-    await dbUpdate('orders', staffRow.id, { items: JSON.stringify(staff) });
+    await dbUpdate('uwu_orders', staffRow.id, { items: JSON.stringify(staff) });
   } else {
-    await dbInsert('orders', { table_id: null, items: JSON.stringify(staff), total: 0, status: 'UWU_STAFF' });
+    await dbInsert('uwu_orders', { table_id: null, items: JSON.stringify(staff), total: 0, status: 'UWU_STAFF' });
   }
 }
 
@@ -602,7 +598,6 @@ function openManagerLogin(btn){
 function closeManagerLogin(){document.getElementById("managerLoginModal").classList.remove("show")}
 function verifyManagerPassword(){
   const input=document.getElementById("managerPassword").value;
-  // หรือสามารถดึง Password จาก Database แบบเดียวกับ 77 STAR ตรงนี้ได้
   if(input===MANAGER_PASSWORD){
     managerUnlocked=true;
     closeManagerLogin();
