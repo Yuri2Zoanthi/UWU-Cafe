@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>UWU Cafe Manager</title>
+<title>UWU Cafe Manager (Realtime)</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Thai",sans-serif;background:#fff7fb;color:#4b3842}
 .app{min-height:100vh}.main{width:100%;padding:0 28px 40px}.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:center;min-height:154px;padding:18px 24px 14px;background:rgba(255,247,251,.96);backdrop-filter:blur(12px);border-bottom:1px solid #f2dce6;box-shadow:0 8px 25px rgba(214,95,145,.08)}.brand-center{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:1180px}.logo{text-align:center;font-size:28px;font-weight:800;color:#e88bb2}.logo span{font-size:13px;display:block;color:#9c7c8b;font-weight:400;margin-top:2px}.top-menu{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap}.top-menu button{border:1px solid #f0d3e0;background:#fff;border-radius:18px;padding:10px 14px;font-size:14px;color:#67515c;cursor:pointer;box-shadow:0 4px 12px rgba(214,95,145,.06);transition:.18s}.top-menu button span{margin-right:5px}.top-menu button:hover,.top-menu button.active{background:#ffe3ef;border-color:#f4bdd4;color:#d65f91;font-weight:700;transform:translateY(-1px)}.cute-decoration{position:absolute;top:24px;font-size:24px;letter-spacing:5px;opacity:.9}.cute-decoration.left{left:28px}.cute-decoration.right{right:28px}.page-heading{display:flex;justify-content:space-between;align-items:center;max-width:1320px;margin:28px auto 25px}.page-heading h1{margin:0;font-size:28px}.badge{background:#ffe5f0;padding:8px 14px;border-radius:20px;color:#d65f91}
@@ -48,17 +48,18 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:13px 10p
 @media(max-width:600px){.menu-picker{grid-template-columns:1fr auto}.add-item-btn{grid-column:1/-1}.order-modal-large{padding:22px}}
 .order-modal-box{width:min(430px,calc(100% - 32px));background:linear-gradient(180deg,#fffaff 0%,#fff 100%);border:2px solid #f6cde0;border-radius:28px;padding:30px;box-shadow:0 24px 70px rgba(180,95,140,.28);position:relative;overflow:hidden;animation:catPop .22s ease-out}.order-modal-box:before,.order-modal-box:after{content:"";position:absolute;top:-12px;width:90px;height:90px;background:#ffe5f0;border-radius:50%}.order-modal-box:before{left:-35px}.order-modal-box:after{right:-35px}@keyframes catPop{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}.cat-face{width:78px;height:78px;margin:-5px auto 12px;border-radius:28px;background:#ffd9e9;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;z-index:1;box-shadow:0 8px 20px rgba(232,139,178,.18)}.order-modal-box h2{text-align:center;color:#d96598;margin:5px 0 6px;font-size:24px}.order-sub{text-align:center;color:#9c7b8b;font-size:13px;margin-bottom:22px}.order-modal-box label{display:block;color:#7e5c6d;font-weight:700;font-size:13px;margin-bottom:8px}.order-modal-box select{width:100%;padding:13px 15px;border:2px solid #f3d4e2;border-radius:15px;background:#fff;color:#6e4e60;font-size:15px;outline:none}.order-modal-box select:focus{border-color:#e88bb2;box-shadow:0 0 0 4px #ffeaf3}.order-actions{display:flex;gap:10px;margin-top:22px}.order-actions button{flex:1;padding:12px;border-radius:14px}.btn-cancel{background:#fff0f6!important;color:#c85e88!important;border:1px solid #f3cadd!important}.btn-confirm{background:#e88bb2!important;color:white!important;box-shadow:0 7px 16px rgba(232,139,178,.22)} .staff-modal-box{width:min(500px,calc(100% - 32px));background:linear-gradient(180deg,#fff8fc,#ffffff);border:2px solid #ffd4e6;border-radius:30px;padding:30px;box-shadow:0 28px 80px rgba(180,95,140,.30);position:relative;overflow:hidden;animation:catPop .22s ease-out}.staff-modal-box:before,.staff-modal-box:after{content:"";position:absolute;width:95px;height:95px;background:#ffe6f1;border-radius:50%;top:-28px;z-index:0}.staff-modal-box:before{left:-38px}.staff-modal-box:after{right:-38px}.staff-modal-close{position:absolute;right:16px;top:14px;width:38px;height:38px;border:0;border-radius:50%;background:#f38ab4;color:#fff;font-size:22px;cursor:pointer;z-index:3}.staff-cat{position:relative;z-index:2;width:78px;height:78px;margin:-8px auto 10px;border-radius:28px;background:#ffdce9;display:flex;align-items:center;justify-content:center;font-size:46px;box-shadow:0 9px 22px rgba(232,139,178,.20)}.staff-title{text-align:center;color:#d85f92;font-size:25px;font-weight:800;position:relative;z-index:2}.staff-sub{text-align:center;color:#a17f90;font-size:13px;margin:5px 0 22px}.staff-modal-box label{display:block;margin:10px 0 5px;font-weight:700;color:#7c5b6c}.staff-modal-box input,.staff-modal-box select{border:2px solid #f2d5e2;border-radius:15px;padding:13px 15px;background:#fff}.staff-modal-box input:focus,.staff-modal-box select:focus{outline:none;border-color:#e88bb2;box-shadow:0 0 0 4px #ffeaf3}.staff-actions{display:flex;gap:12px;margin-top:22px;border-top:2px dashed #f5dbe6;padding-top:18px}.staff-actions button{flex:1;padding:13px;border-radius:15px}.staff-cancel{background:#fff0f6!important;color:#c85e88!important;border:1px solid #f3cadd!important}.staff-save{background:#e86f9f!important;color:#fff!important;box-shadow:0 8px 18px rgba(232,111,159,.22)} .edit-staff-btn{margin-right:7px!important} .staff-row-actions{white-space:nowrap}.shift-time{font-size:11px;color:#a17f90;margin-top:4px;text-align:center}
 @media(max-width:800px){.main{padding:0 14px 30px}.topbar{min-height:150px;padding:14px 10px}.cute-decoration{display:none}.top-menu{gap:6px;overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;width:100%;padding:2px 4px 8px;scrollbar-width:none}.top-menu::-webkit-scrollbar{display:none}.top-menu button{white-space:nowrap;padding:9px 12px;font-size:13px}.page-heading{margin:20px auto}.cards{grid-template-columns:repeat(2,1fr)}.menu-grid{grid-template-columns:1fr}}
-
 .manager-login-box{width:min(430px,calc(100% - 32px));background:linear-gradient(180deg,#fff8fc 0%,#fff 100%);border:2px solid #ffd4e6;border-radius:30px;padding:30px;box-shadow:0 28px 80px rgba(180,95,140,.30);position:relative;overflow:hidden;animation:catPop .22s ease-out}.manager-login-box:before,.manager-login-box:after{content:"";position:absolute;width:95px;height:95px;background:#ffe6f1;border-radius:50%;top:-30px;z-index:0}.manager-login-box:before{left:-40px}.manager-login-box:after{right:-40px}.manager-lock{position:relative;z-index:2;width:78px;height:78px;margin:-7px auto 12px;border-radius:28px;background:#ffdce9;display:flex;align-items:center;justify-content:center;font-size:44px;box-shadow:0 9px 22px rgba(232,139,178,.20)}.manager-title{text-align:center;color:#d85f92;font-size:25px;font-weight:800;position:relative;z-index:2}.manager-sub{text-align:center;color:#a17f90;font-size:13px;margin:6px 0 22px;position:relative;z-index:2}.manager-login-box label{display:block;margin:10px 0 5px;font-weight:700;color:#7c5b6c}.manager-login-box input{border:2px solid #f2d5e2;border-radius:15px;padding:13px 15px;background:#fff}.manager-login-box input:focus{outline:none;border-color:#e88bb2;box-shadow:0 0 0 4px #ffeaf3}.manager-login-actions{display:flex;gap:12px;margin-top:20px}.manager-login-actions button{flex:1;padding:13px;border-radius:15px}.manager-cancel{background:#fff0f6!important;color:#c85e88!important;border:1px solid #f3cadd!important}.manager-enter{background:#e86f9f!important;color:#fff!important;box-shadow:0 8px 18px rgba(232,111,159,.22)}.manager-page-note{color:#9c7c8b;font-size:13px;margin-top:-12px;margin-bottom:18px}
+.loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.9);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#d65f91;font-size:20px;font-weight:bold;transition:0.3s;}
 </style>
 </head>
 <body>
+<div id="loading" class="loading-overlay">🐱 กำลังโหลดข้อมูลร้าน...</div>
 <div class="app">
 <main class="main">
 <header class="topbar">
   <div class="cute-decoration left">🌸 🐾</div>
   <div class="brand-center">
-    <div class="logo">🐱 UWU Cafe<span>Manager System</span></div>
+    <div class="logo">🐱 UWU Cafe<span>Manager System (Realtime)</span></div>
     <div class="top-menu">
       <button class="active" onclick="showPage('dashboard',this)"><span>🏠</span> Dashboard</button>
       <button onclick="showPage('orders',this)"><span>🧾</span> จัดการออเดอร์</button>
@@ -96,24 +97,21 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:13px 10p
 
 <section id="manager" class="page">
  <div class="cards">
-  <div class="card"><small>ยอดขายวันนี้</small><div class="value" id="sales">฿12,450</div></div>
-  <div class="card"><small>ออเดอร์วันนี้</small><div class="value" id="orderCount">28</div></div>
-  <div class="card"><small>โต๊ะว่าง</small><div class="value" id="freeTables">6</div></div>
-  <div class="card"><small>เมนูขายดี</small><div class="value">🍓 8</div></div>
+  <div class="card"><small>ยอดขายวันนี้</small><div class="value" id="sales">฿0</div></div>
+  <div class="card"><small>ออเดอร์วันนี้</small><div class="value" id="orderCount">0</div></div>
+  <div class="card"><small>โต๊ะว่าง</small><div class="value" id="freeTables">0</div></div>
+  <div class="card"><small>เมนูขายดี</small><div class="value">🍓</div></div>
  </div>
  <div class="manager-page-note">🔐 เฉพาะผู้จัดการเท่านั้น — ข้อมูลสรุปและประวัติออเดอร์ที่จบงานแล้วอยู่ในหน้านี้</div>
  <div class="cards">
   <div class="card"><small>ยอดขายจากงานที่จบแล้ว</small><div class="value" id="completedSales">฿0</div></div>
   <div class="card"><small>ออเดอร์ที่จบแล้ว</small><div class="value" id="completedCount">0</div></div>
-  <div class="card"><small>ยอดขายวันนี้</small><div class="value">฿0</div></div>
-  <div class="card"><small>เดือนนี้</small><div class="value">฿0</div></div>
  </div>
  <div class="panel"><h2>📊 ประวัติออเดอร์ที่จบงานแล้ว</h2>
   <table><thead><tr><th>วันที่</th><th>เลขที่</th><th>โต๊ะ</th><th>รายการ</th><th>ยอดรวม</th><th>สถานะ</th></tr></thead>
   <tbody id="completedOrdersTable"></tbody></table>
  </div>
 </section>
-
 </main>
 </div>
 
@@ -122,12 +120,8 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:13px 10p
 <div class="cat-face">🐱</div>
 <h2>เพิ่มออเดอร์ใหม่</h2>
 <div class="order-sub">เหมียว~ เลือกโต๊ะและเมนูที่ลูกค้าสั่งนะ</div>
-
 <label for="orderTable">🪑 เลือกโต๊ะ</label>
-<select id="orderTable">
-<option value="T01">🪑 T01</option><option value="T02">🪑 T02</option><option value="T03">🪑 T03</option><option value="T04">🪑 T04</option><option value="T05">🪑 T05</option><option value="T06">🪑 T06</option><option value="T07">🪑 T07</option><option value="T08">🪑 T08</option>
-</select>
-
+<select id="orderTable"></select>
 <label>🍰 เลือกเมนู</label>
 <div class="menu-picker">
   <select id="orderMenu"></select>
@@ -138,40 +132,33 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:13px 10p
   </div>
   <button type="button" class="btn add-item-btn" onclick="addOrderItem()">＋ เพิ่มรายการ</button>
 </div>
-
 <div class="selected-title">🐾 รายการที่เลือก</div>
 <div id="selectedOrderItems" class="selected-order-items">
   <div class="empty-order">ยังไม่มีเมนูที่เลือก เหมียว~</div>
 </div>
 <div class="order-total"><span>ยอดรวม</span><strong id="orderTotal">฿0</strong></div>
-
 <div class="order-actions">
 <button class="btn btn-cancel" onclick="closeOrderModal()">ยกเลิก</button>
 <button class="btn btn-confirm" onclick="confirmNewOrder()">🐾 ยืนยันออเดอร์</button>
 </div>
 </div></div>
+
 <div class="modal" id="menuModal" onclick="if(event.target===this)closeMenuModal()">
 <div class="modal-box menu-form-box cute-menu-editor">
   <div class="editor-cat">🐱</div>
   <div class="editor-title">🍰 <span id="menuModalTitle">เพิ่มเมนู</span></div>
   <div class="editor-subtitle">เหมียว~ แก้ไขข้อมูลเมนูได้เลยนะ 💕</div>
-
   <label>🏷️ ชื่อเมนู</label>
   <input id="menuName" placeholder="เช่น Kitty Cloud Pancake">
-
   <label>💰 ราคา</label>
   <input id="menuPrice" type="number" min="0" placeholder="เช่น 159">
-
   <label>🍰 หมวดหมู่</label>
   <select id="menuCat"><option>ขนมหวาน</option><option>เครื่องดื่ม</option></select>
-
   <label>🖼️ URL รูปเมนู</label>
   <input id="menuImage" type="url" placeholder="https://example.com/cake.jpg" oninput="previewMenuImage()">
-
   <div id="menuImagePreview" class="menu-image-preview">
     <span>🐱</span><small>ใส่ URL รูปเพื่อดูตัวอย่าง</small>
   </div>
-
   <div class="actions editor-actions">
     <button class="btn secondary" onclick="closeMenuModal()">ยกเลิก</button>
     <button class="btn" onclick="saveMenu()">🐾 บันทึก</button>
@@ -210,32 +197,22 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:13px 10p
 </div>
 
 <script>
-let menus=[
- {name:"Kitty Cloud Pancake",price:159,cat:"ขนมหวาน",icon:"🥞"},
- {name:"Pink Paw Strawberry Cake",price:149,cat:"ขนมหวาน",icon:"🍰"},
- {name:"Meowberry Fizz",price:99,cat:"เครื่องดื่ม",icon:"🍓"},
- {name:"Kitty Rose Latte",price:119,cat:"เครื่องดื่ม",icon:"☕"},
- {name:"Meow Meow Macaron",price:89,cat:"ขนมหวาน",icon:"🍪"},
- {name:"Milky Meow Strawberry",price:109,cat:"เครื่องดื่ม",icon:"🥛"}
-];
-let orders=[
- {id:"#001",table:"T01",items:"Kitty Rose Latte ×2",total:238,status:"กำลังทำ"},
- {id:"#002",table:"T04",items:"Pancake ×1, Fizz ×1",total:258,status:"พร้อมเสิร์ฟ"}
-];
+let menus = [];
+let orders = [];
+let completedOrders = [];
+let tables = [];
+let staff = [];
+
 function todayISO(){return new Date().toISOString().slice(0,10)}
 function formatDate(date){
  const d=new Date(date+"T00:00:00");
  return d.toLocaleDateString("th-TH",{day:"2-digit",month:"2-digit",year:"numeric"});
 }
-let completedOrders=[
- {id:"#003",table:"T02",items:"Strawberry Cake ×2",total:298,status:"เสร็จแล้ว",date:todayISO()}
-];
-let tables=Array.from({length:8},(_,i)=>({id:"T0"+(i+1),status:i<2?"มีลูกค้า":"ว่าง"}));
-let staff=[{name:"Mimi",role:"ผู้จัดการ",status:"กำลังทำงาน",attendance:"เข้าเวร",attendanceTime:new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"})},{name:"Mochi",role:"พนักงานเสิร์ฟ",status:"กำลังทำงาน",attendance:"เข้าเวร",attendanceTime:new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"})},{name:"Mallow",role:"พนักงานครัว",status:"พัก",attendance:"ยังไม่เข้าเวร",attendanceTime:"-"}];
 
 const titles={dashboard:"Dashboard",orders:"จัดการออเดอร์",menus:"จัดการเมนู",tables:"จัดการโต๊ะ",staff:"จัดการพนักงาน",manager:"ผู้จัดการ"};
 function showPage(id,btn){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");document.getElementById("pageTitle").textContent=titles[id];}
 function statusClass(s){return s==="เสร็จแล้ว"?"green":s==="กำลังทำ"?"yellow":s==="ว่าง"?"green":s==="พัก"?"gray":""}
+
 function renderOrders(){
  let h=orders.map((o,i)=>`<tr><td>${o.id}</td><td>${o.table}</td><td>${o.items}</td><td>฿${o.total}</td><td>
 <select class="status-select" onchange="changeStatus(${i}, this.value)">
@@ -244,114 +221,162 @@ function renderOrders(){
 <option value="เสร็จแล้ว" ${o.status==="เสร็จแล้ว"?"selected":""}>เสร็จแล้ว</option>
 <option value="ยกเลิก" ${o.status==="ยกเลิก"?"selected":""}>ยกเลิก</option>
 </select></td></tr>`).join("");
- ordersTable.innerHTML=h;dashOrders.innerHTML=orders.slice(0,5).map(o=>`<tr><td>${o.id}</td><td>${o.table}</td><td>${o.items}</td><td>฿${o.total}</td><td><span class="status ${statusClass(o.status)}">${o.status}</span></td></tr>`).join("");
+ document.getElementById("ordersTable").innerHTML=h;
+ document.getElementById("dashOrders").innerHTML=orders.slice(0,5).map(o=>`<tr><td>${o.id}</td><td>${o.table}</td><td>${o.items}</td><td>฿${o.total}</td><td><span class="status ${statusClass(o.status)}">${o.status}</span></td></tr>`).join("");
 }
+
 function changeStatus(i,value){
+ const o = orders[i];
+ if(!o) return;
  if(value==="เสร็จแล้ว"){
-   const finished={...orders[i],status:"เสร็จแล้ว",date:todayISO()};
-   completedOrders.unshift(finished);
-   orders.splice(i,1);
+   const finished={...o, status:"เสร็จแล้ว", date:todayISO()};
+   delete finished.key; 
+   window.dbPush(window.dbRef(window.db, 'completedOrders'), finished);
+   window.dbRemove(window.dbRef(window.db, 'orders/' + o.key));
  }else{
-   orders[i].status=value;
+   window.dbUpdate(window.dbRef(window.db, 'orders/' + o.key), { status: value });
  }
- renderOrders();
- renderManagerData();
- updateDash();
 }
+
 let currentOrderItems=[];
 let currentOrderQty=1;
+
 function populateOrderMenu(){
- orderMenu.innerHTML=menus.map((m,i)=>`<option value="${i}">${m.icon} ${m.name} · ฿${m.price}</option>`).join("");
+ document.getElementById("orderMenu").innerHTML=menus.map((m,i)=>`<option value="${i}">${m.icon} ${m.name} · ฿${m.price}</option>`).join("");
+ document.getElementById("orderTable").innerHTML=tables.map(t=>`<option value="${t.id}">🪑 ${t.id}</option>`).join("");
 }
 function renderSelectedOrderItems(){
+ const orderItemsDiv = document.getElementById("selectedOrderItems");
+ const orderTotalEl = document.getElementById("orderTotal");
  if(!currentOrderItems.length){
-   selectedOrderItems.innerHTML='<div class="empty-order">ยังไม่มีเมนูที่เลือก เหมียว~</div>';
+   orderItemsDiv.innerHTML='<div class="empty-order">ยังไม่มีเมนูที่เลือก เหมียว~</div>';
  }else{
-   selectedOrderItems.innerHTML=currentOrderItems.map((item,i)=>`<div class="selected-order-item"><div class="item-info"><b>${item.icon} ${item.name}</b><br><small>฿${item.price} × ${item.qty}</small></div><strong>฿${item.price*item.qty}</strong><button class="remove-item" onclick="removeOrderItem(${i})">✕</button></div>`).join("");
+   orderItemsDiv.innerHTML=currentOrderItems.map((item,i)=>`<div class="selected-order-item"><div class="item-info"><b>${item.icon} ${item.name}</b><br><small>฿${item.price} × ${item.qty}</small></div><strong>฿${item.price*item.qty}</strong><button class="remove-item" onclick="removeOrderItem(${i})">✕</button></div>`).join("");
  }
  const total=currentOrderItems.reduce((s,item)=>s+item.price*item.qty,0);
- orderTotal.textContent="฿"+total.toLocaleString("th-TH");
+ orderTotalEl.textContent="฿"+total.toLocaleString("th-TH");
 }
 function newOrder(){
  currentOrderItems=[];
  currentOrderQty=1;
- orderQty.textContent="1";
- orderTable.value="T01";
+ document.getElementById("orderQty").textContent="1";
  populateOrderMenu();
  renderSelectedOrderItems();
- orderModal.classList.add("show");
+ document.getElementById("orderModal").classList.add("show");
 }
-function closeOrderModal(){orderModal.classList.remove("show")}
-function changeOrderQty(delta){currentOrderQty=Math.max(1,currentOrderQty+delta);orderQty.textContent=currentOrderQty}
+function closeOrderModal(){document.getElementById("orderModal").classList.remove("show")}
+function changeOrderQty(delta){currentOrderQty=Math.max(1,currentOrderQty+delta);document.getElementById("orderQty").textContent=currentOrderQty}
 function addOrderItem(){
  if(!menus.length)return alert("ยังไม่มีเมนูในร้าน");
- const m=menus[Number(orderMenu.value)];
+ const m=menus[Number(document.getElementById("orderMenu").value)];
  const found=currentOrderItems.find(x=>x.name===m.name);
  if(found) found.qty+=currentOrderQty;
  else currentOrderItems.push({...m,qty:currentOrderQty});
  currentOrderQty=1;
- orderQty.textContent="1";
+ document.getElementById("orderQty").textContent="1";
  renderSelectedOrderItems();
 }
 function removeOrderItem(i){currentOrderItems.splice(i,1);renderSelectedOrderItems()}
 function confirmNewOrder(){
- const t=orderTable.value;
+ const t=document.getElementById("orderTable").value;
  if(!t)return;
  if(!currentOrderItems.length){alert("เลือกเมนูก่อนนะเหมียว 🐱");return}
  const total=currentOrderItems.reduce((s,item)=>s+item.price*item.qty,0);
  const itemText=currentOrderItems.map(item=>`${item.name} ×${item.qty}`).join(", ");
- orders.unshift({id:"#"+String(orders.length+completedOrders.length+1).padStart(3,"0"),table:t,items:itemText,total,status:"กำลังทำ"});
- renderOrders();updateDash();closeOrderModal();
+ 
+ const newOrder = {
+   id:"#"+String(Date.now()).slice(-4), 
+   table:t, items:itemText, total, status:"กำลังทำ", timestamp: Date.now()
+ };
+ window.dbPush(window.dbRef(window.db, 'orders'), newOrder);
+ closeOrderModal();
 }
-function renderMenus(){menuGrid.innerHTML=menus.map((m,i)=>`<div class="menu-item"><div class="menu-img">${m.image?`<img src="${m.image}" alt="${m.name}" onerror="this.style.display='none';this.parentElement.innerHTML='${m.icon}'">`:m.icon}</div><b>${m.name}</b><p><span class="price">฿${m.price}</span> · ${m.cat}</p><div class="actions"><button class="btn secondary" onclick="editMenu(${i})">แก้ไข</button><button class="btn danger" onclick="deleteMenu(${i})">ลบ</button></div></div>`).join("")}
+
+function renderMenus(){document.getElementById("menuGrid").innerHTML=menus.map((m,i)=>`<div class="menu-item"><div class="menu-img">${m.image?`<img src="${m.image}" alt="${m.name}" onerror="this.style.display='none';this.parentElement.innerHTML='${m.icon}'">`:m.icon}</div><b>${m.name}</b><p><span class="price">฿${m.price}</span> · ${m.cat}</p><div class="actions"><button class="btn secondary" onclick="editMenu(${i})">แก้ไข</button><button class="btn danger" onclick="deleteMenu(${i})">ลบ</button></div></div>`).join("")}
 function previewMenuImage(){
- const url=menuImage.value.trim();
- menuImagePreview.innerHTML=url?`<img src="${url}" alt="ตัวอย่างรูป" onerror="this.style.display='none';this.parentElement.innerHTML='<span>⚠️</span><small>URL รูปนี้ใช้ไม่ได้</small>'">`:'<span>🐱</span><small>ใส่ URL รูปเพื่อดูตัวอย่าง</small>';
+ const url=document.getElementById("menuImage").value.trim();
+ document.getElementById("menuImagePreview").innerHTML=url?`<img src="${url}" alt="ตัวอย่างรูป" onerror="this.style.display='none';this.parentElement.innerHTML='<span>⚠️</span><small>URL รูปนี้ใช้ไม่ได้</small>'">`:'<span>🐱</span><small>ใส่ URL รูปเพื่อดูตัวอย่าง</small>';
 }
 let editingMenuIndex=-1;
-function resetMenuPreview(){menuImagePreview.innerHTML='<span>🐱</span><small>ใส่ URL รูปเพื่อดูตัวอย่าง</small>'}
+function resetMenuPreview(){document.getElementById("menuImagePreview").innerHTML='<span>🐱</span><small>ใส่ URL รูปเพื่อดูตัวอย่าง</small>'}
 function openMenuModal(){
  editingMenuIndex=-1;
- menuModalTitle.textContent="เพิ่มเมนู";
- menuName.value="";menuPrice.value="";menuCat.value="ขนมหวาน";menuImage.value="";
+ document.getElementById("menuModalTitle").textContent="เพิ่มเมนู";
+ document.getElementById("menuName").value="";
+ document.getElementById("menuPrice").value="";
+ document.getElementById("menuCat").value="ขนมหวาน";
+ document.getElementById("menuImage").value="";
  resetMenuPreview();
- menuModal.classList.add("show");
- setTimeout(()=>menuName.focus(),100);
+ document.getElementById("menuModal").classList.add("show");
+ setTimeout(()=>document.getElementById("menuName").focus(),100);
 }
-function closeMenuModal(){menuModal.classList.remove("show");editingMenuIndex=-1}
+function closeMenuModal(){document.getElementById("menuModal").classList.remove("show");editingMenuIndex=-1}
 function editMenu(i){
  const m=menus[i];
  editingMenuIndex=i;
- menuModalTitle.textContent="แก้ไขเมนู";
- menuName.value=m.name;
- menuPrice.value=m.price;
- menuCat.value=m.cat;
- menuImage.value=m.image||"";
+ document.getElementById("menuModalTitle").textContent="แก้ไขเมนู";
+ document.getElementById("menuName").value=m.name;
+ document.getElementById("menuPrice").value=m.price;
+ document.getElementById("menuCat").value=m.cat;
+ document.getElementById("menuImage").value=m.image||"";
  previewMenuImage();
- menuModal.classList.add("show");
- setTimeout(()=>menuName.focus(),100);
+ document.getElementById("menuModal").classList.add("show");
+ setTimeout(()=>document.getElementById("menuName").focus(),100);
 }
 function saveMenu(){
- let n=menuName.value.trim(),p=Number(menuPrice.value),c=menuCat.value,img=menuImage.value.trim();
+ let n=document.getElementById("menuName").value.trim(), p=Number(document.getElementById("menuPrice").value), c=document.getElementById("menuCat").value, img=document.getElementById("menuImage").value.trim();
  if(!n||!p)return alert("กรอกชื่อเมนูและราคาให้ครบ 🐱");
  const data={name:n,price:p,cat:c,icon:c==="เครื่องดื่ม"?"🧋":"🍰",image:img};
- if(editingMenuIndex>=0) menus[editingMenuIndex]=data;
- else menus.push(data);
- renderMenus();
+ 
+ if(editingMenuIndex>=0) {
+   window.dbUpdate(window.dbRef(window.db, 'menus/' + menus[editingMenuIndex].key), data);
+ } else {
+   window.dbPush(window.dbRef(window.db, 'menus'), data);
+ }
  closeMenuModal();
 }
-function deleteMenu(i){if(confirm("ลบเมนูนี้ใช่ไหม?")){menus.splice(i,1);renderMenus()}}
-function renderTables(){tableGrid.innerHTML=tables.map((t,i)=>`<div class="card"><div style="font-size:40px">🪑</div><h2>${t.id}</h2><span class="status ${statusClass(t.status)}">${t.status}</span><div class="actions" style="margin-top:15px"><button class="btn secondary" onclick="toggleTable(${i})">เปลี่ยนสถานะ</button><button class="btn danger" onclick="tables.splice(${i},1);renderTables();updateDash()">ลบ</button></div></div>`).join("");updateDash()}
-function toggleTable(i){tables[i].status=tables[i].status==="ว่าง"?"มีลูกค้า":tables[i].status==="มีลูกค้า"?"จองแล้ว":"ว่าง";renderTables()}
-function addTable(){tables.push({id:"T"+String(tables.length+1).padStart(2,"0"),status:"ว่าง"});renderTables()}
-function changeStaffStatus(i,value){staff[i].status=value;renderStaff()}
+function deleteMenu(i){
+  if(confirm("ลบเมนูนี้ใช่ไหม?")){
+    window.dbRemove(window.dbRef(window.db, 'menus/' + menus[i].key));
+  }
+}
+
+function renderTables(){
+  document.getElementById("tableGrid").innerHTML=tables.map((t,i)=>`<div class="card"><div style="font-size:40px">🪑</div><h2>${t.id}</h2><span class="status ${statusClass(t.status)}">${t.status}</span><div class="actions" style="margin-top:15px"><button class="btn secondary" onclick="toggleTable(${i})">เปลี่ยนสถานะ</button><button class="btn danger" onclick="deleteTable(${i})">ลบ</button></div></div>`).join("");
+}
+function toggleTable(i){
+  let t = tables[i];
+  let newStatus = t.status==="ว่าง" ? "มีลูกค้า" : t.status==="มีลูกค้า" ? "จองแล้ว" : "ว่าง";
+  window.dbUpdate(window.dbRef(window.db, 'tables/' + t.key), { status: newStatus });
+}
+function addTable(){
+  let newId = "T" + String(tables.length+1).padStart(2,"0");
+  window.dbPush(window.dbRef(window.db, 'tables'), { id: newId, status: "ว่าง" });
+}
+function deleteTable(i){
+  if(confirm("ลบโต๊ะนี้ใช่ไหม?")) {
+    window.dbRemove(window.dbRef(window.db, 'tables/' + tables[i].key));
+  }
+}
+
 function renderStaff(){
  const e=document.getElementById("staffTable");
- e.innerHTML=staff.map((s,i)=>`<tr><td>${s.name}</td><td>${s.role}</td><td><select class="status-select" onchange="changeStaffStatus(${i},this.value)"><option value="กำลังทำงาน" ${s.status==="กำลังทำงาน"?"selected":""}>🟢 กำลังทำงาน</option><option value="พัก" ${s.status==="พัก"?"selected":""}>🟡 พัก</option><option value="ลา" ${s.status==="ลา"?"selected":""}>🔴 ลา</option></select></td><td><select class="status-select" onchange="changeAttendance(${i},this.value)"><option value="ยังไม่เข้าเวร" ${(!s.attendance||s.attendance==="ยังไม่เข้าเวร")?"selected":""}>⚪ ยังไม่เข้าเวร</option><option value="เข้าเวร" ${s.attendance==="เข้าเวร"?"selected":""}>🟢 เข้าเวร</option><option value="ออกเวร" ${s.attendance==="ออกเวร"?"selected":""}>🔵 ออกเวร</option><option value="ลา" ${s.attendance==="ลา"?"selected":""}>🔴 ลา</option></select><div class="shift-time">${s.attendanceTime||"-"}</div></td><td class="staff-row-actions"><button class="btn edit-staff-btn" onclick="openStaffModal(${i})">แก้ไข</button><button class="btn danger" onclick="removeStaff(${i})">ลบ</button></td></tr>`).join("")
+ e.innerHTML=staff.map((s,i)=>`<tr><td>${s.name}</td><td>${s.role}</td><td><select class="status-select" onchange="changeStaffStatus(${i},this.value)"><option value="กำลังทำงาน" ${s.status==="กำลังทำงาน"?"selected":""}>🟢 กำลังทำงาน</option><option value="พัก" ${s.status==="พัก"?"selected":""}>🟡 พัก</option><option value="ลา" ${s.status==="ลา"?"selected":""}>🔴 ลา</option></select></td><td><select class="status-select" onchange="changeAttendance(${i},this.value)"><option value="ยังไม่เข้าเวร" ${(!s.attendance||s.attendance==="ยังไม่เข้าเวร")?"selected":""}>⚪ ยังไม่เข้าเวร</option><option value="เข้าเวร" ${s.attendance==="เข้าเวร"?"selected":""}>🟢 เข้าเวร</option><option value="ออกเวร" ${s.attendance==="ออกเวร"?"selected":""}>🔵 ออกเวร</option><option value="ลา" ${s.attendance==="ลา"?"selected":""}>🔴 ลา</option></select><div class="shift-time">${s.attendanceTime||"-"}</div></td><td class="staff-row-actions"><button class="btn edit-staff-btn" onclick="openStaffModal(${i})">แก้ไข</button><button class="btn danger" onclick="removeStaff(${i})">ลบ</button></td></tr>`).join("");
 }
-function changeStaffStatus(i,status){staff[i].status=status;renderStaff()}
-function changeAttendance(i,status){staff[i].attendance=status;staff[i].attendanceTime=new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});renderStaff()}
-function removeStaff(i){if(confirm("ลบพนักงานคนนี้ใช่ไหม?")){staff.splice(i,1);renderStaff()}}
+function changeStaffStatus(i,status){
+  window.dbUpdate(window.dbRef(window.db, 'staff/' + staff[i].key), { status: status });
+}
+function changeAttendance(i,status){
+  window.dbUpdate(window.dbRef(window.db, 'staff/' + staff[i].key), { 
+    attendance: status, 
+    attendanceTime: new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"}) 
+  });
+}
+function removeStaff(i){
+  if(confirm("ลบพนักงานคนนี้ใช่ไหม?")){
+    window.dbRemove(window.dbRef(window.db, 'staff/' + staff[i].key));
+  }
+}
 let editingStaffIndex=-1;
 function openStaffModal(index=-1){
  editingStaffIndex=index;
@@ -368,10 +393,20 @@ function closeStaffModal(){document.getElementById("staffModal").classList.remov
 function saveStaff(){
  const name=document.getElementById("staffName").value.trim();
  if(!name){alert("กรุณาใส่ชื่อพนักงานนะ 🐱");return}
- const data={name,role:document.getElementById("staffRole").value,status:document.getElementById("staffStatus").value,attendance:document.getElementById("staffAttendance").value,attendanceTime:(editingStaffIndex>=0?staff[editingStaffIndex].attendanceTime:"-")};
- if(editingStaffIndex<0) staff.push(data); else staff[editingStaffIndex]=data;
- renderStaff();closeStaffModal();
+ const data={
+   name, role:document.getElementById("staffRole").value,
+   status:document.getElementById("staffStatus").value,
+   attendance:document.getElementById("staffAttendance").value,
+   attendanceTime:(editingStaffIndex>=0?staff[editingStaffIndex].attendanceTime:"-")
+ };
+ if(editingStaffIndex<0) {
+   window.dbPush(window.dbRef(window.db, 'staff'), data);
+ } else {
+   window.dbUpdate(window.dbRef(window.db, 'staff/' + staff[editingStaffIndex].key), data);
+ }
+ closeStaffModal();
 }
+
 const MANAGER_PASSWORD="1208";
 let managerLoginButton=null;
 let managerUnlocked=false;
@@ -397,13 +432,108 @@ function verifyManagerPassword(){
 
 function renderManagerData(){
  const total=completedOrders.reduce((sum,o)=>sum+Number(o.total||0),0);
- completedSales.textContent="฿"+total.toLocaleString("th-TH");
- completedCount.textContent=completedOrders.length;
- completedOrdersTable.innerHTML=completedOrders.map(o=>`<tr><td>${formatDate(o.date||todayISO())}</td><td>${o.id}</td><td>${o.table}</td><td>${o.items}</td><td>฿${Number(o.total).toLocaleString("th-TH")}</td><td><span class="status green">เสร็จแล้ว</span></td></tr>`).join("");
+ document.getElementById("completedSales").textContent="฿"+total.toLocaleString("th-TH");
+ document.getElementById("completedCount").textContent=completedOrders.length;
+ document.getElementById("completedOrdersTable").innerHTML=completedOrders.map(o=>`<tr><td>${formatDate(o.date||todayISO())}</td><td>${o.id}</td><td>${o.table}</td><td>${o.items}</td><td>฿${Number(o.total).toLocaleString("th-TH")}</td><td><span class="status green">เสร็จแล้ว</span></td></tr>`).join("");
 }
-function updateDash(){freeTables.textContent=tables.filter(t=>t.status==="ว่าง").length;orderCount.textContent=orders.length}
-renderOrders();renderMenus();renderTables();renderStaff();renderManagerData();updateDash();
-menuImage.addEventListener("input",previewMenuImage);
+function updateDash(){
+ document.getElementById("freeTables").textContent=tables.filter(t=>t.status==="ว่าง").length;
+ document.getElementById("orderCount").textContent=orders.length;
+ const totalSales = orders.reduce((sum,o)=>sum+Number(o.total||0),0);
+ document.getElementById("sales").textContent="฿"+totalSales.toLocaleString("th-TH");
+}
+</script>
+
+<!-- ============================================== -->
+<!-- 🚀 FIREBASE INTEGRATION 🚀 -->
+<!-- ============================================== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, onValue, push, set, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  // 👉 ใส่ตั้งค่า Firebase ของคุณ 👈
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY", // <--- ⚠️ ยังต้องใส่ API Key ของคุณเอง
+    authDomain: "uwu-cafe-1c55f.firebaseapp.com",
+    databaseURL: "https://uwu-cafe-1c55f-default-rtdb.firebaseio.com",
+    projectId: "uwu-cafe-1c55f",
+    storageBucket: "uwu-cafe-1c55f.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID", // <--- ⚠️ ยังต้องใส่
+    appId: "18f44589-2b12-4714-886f-d3644b72fea3" // <--- ✅ ใส่ App ID ให้แล้ว
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  window.db = db;
+  window.dbRef = ref;
+  window.dbPush = push;
+  window.dbSet = set;
+  window.dbUpdate = update;
+  window.dbRemove = remove;
+  window.dbOnValue = onValue;
+
+  window.initFirebaseSync = function() {
+    onValue(ref(db, 'menus'), (snap) => {
+      if(!snap.exists()){
+        const def = [{name:"Kitty Cloud Pancake",price:159,cat:"ขนมหวาน",icon:"🥞"},{name:"Pink Paw Strawberry Cake",price:149,cat:"ขนมหวาน",icon:"🍰"},{name:"Meowberry Fizz",price:99,cat:"เครื่องดื่ม",icon:"🍓"},{name:"Kitty Rose Latte",price:119,cat:"เครื่องดื่ม",icon:"☕"},{name:"Meow Meow Macaron",price:89,cat:"ขนมหวาน",icon:"🍪"},{name:"Milky Meow Strawberry",price:109,cat:"เครื่องดื่ม",icon:"🥛"}];
+        def.forEach(m => push(ref(db, 'menus'), m));
+      } else {
+        const data = snap.val();
+        menus = Object.keys(data).map(k => ({...data[k], key: k}));
+        renderMenus();
+        populateOrderMenu();
+      }
+    });
+
+    onValue(ref(db, 'orders'), (snap) => {
+      if(snap.exists()){
+        const data = snap.val();
+        orders = Object.keys(data).map(k => ({...data[k], key: k})).reverse(); 
+      } else {
+        orders = [];
+      }
+      renderOrders();
+      updateDash();
+    });
+
+    onValue(ref(db, 'completedOrders'), (snap) => {
+      if(snap.exists()){
+        const data = snap.val();
+        completedOrders = Object.keys(data).map(k => ({...data[k], key: k})).reverse();
+      } else {
+        completedOrders = [];
+      }
+      renderManagerData();
+    });
+
+    onValue(ref(db, 'tables'), (snap) => {
+      if(!snap.exists()){
+        const def = Array.from({length:8},(_,i)=>({id:"T0"+(i+1),status:i<2?"มีลูกค้า":"ว่าง"}));
+        def.forEach(t => push(ref(db, 'tables'), t));
+      } else {
+        const data = snap.val();
+        tables = Object.keys(data).map(k => ({...data[k], key: k})).sort((a,b)=>a.id.localeCompare(b.id));
+        renderTables();
+        updateDash();
+      }
+    });
+
+    onValue(ref(db, 'staff'), (snap) => {
+      if(!snap.exists()){
+        const def = [{name:"Mimi",role:"ผู้จัดการ",status:"กำลังทำงาน",attendance:"เข้าเวร",attendanceTime:"08:00"},{name:"Mochi",role:"พนักงานเสิร์ฟ",status:"กำลังทำงาน",attendance:"เข้าเวร",attendanceTime:"08:30"},{name:"Mallow",role:"พนักงานครัว",status:"พัก",attendance:"ยังไม่เข้าเวร",attendanceTime:"-"}];
+        def.forEach(s => push(ref(db, 'staff'), s));
+      } else {
+        const data = snap.val();
+        staff = Object.keys(data).map(k => ({...data[k], key: k}));
+        renderStaff();
+      }
+      
+      setTimeout(() => document.getElementById("loading").style.display = 'none', 800);
+    });
+  };
+
+  window.initFirebaseSync();
 </script>
 </body>
 </html>
