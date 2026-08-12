@@ -210,7 +210,7 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:13px 10p
 
 <script>
 // ==========================================
-// ฐานข้อมูล Supabase Online Realtime (ซิงค์ตรงกับ uwu_tables, uwu_menus, uwu_orders)
+// ฐานข้อมูล Supabase Online Realtime 
 // ==========================================
 window.SUPABASE_CONFIG = {
   url: "https://vehsmnstxrdzcrsrsgzr.supabase.co",
@@ -218,11 +218,13 @@ window.SUPABASE_CONFIG = {
 };
 
 let sb = null;
+let realtimeChannel = null;
+
 if (window.SUPABASE_CONFIG.url && window.supabase) {
   sb = supabase.createClient(window.SUPABASE_CONFIG.url, window.SUPABASE_CONFIG.publishableKey);
   
-  // Realtime Listener ฟังตาราง uwu_
-  sb.channel('uwu-realtime')
+  // Realtime Listener ฟังการเปลี่ยนแปลงจากทุกตารางของ uwu
+  realtimeChannel = sb.channel('uwu-realtime')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'uwu_tables' }, () => refreshAll())
     .on('postgres_changes', { event: '*', schema: 'public', table: 'uwu_menus' }, () => refreshAll())
     .on('postgres_changes', { event: '*', schema: 'public', table: 'uwu_orders' }, () => refreshAll())
@@ -253,44 +255,53 @@ async function dbGet(table) {
 }
 
 async function dbInsert(table, row) {
-  if(!sb) { let a = await dbGet(table); row.id = Date.now(); a.push(row); localStorage.setItem(table, JSON.stringify(a)); return row; }
+  if(!sb) { let a = await dbGet(table); row.id = Date.now(); a.push(row); localStorage.setItem(table, JSON.stringify(a)); refreshAll(); return row; }
   try {
     let {data, error} = await sb.from(table).insert(row).select().single();
     if(error) {
       console.warn("Supabase Insert Warning:", error.message);
-      let a = await dbGet(table); row.id = Date.now(); a.push(row); localStorage.setItem(table, JSON.stringify(a)); return row;
+      let a = await dbGet(table); row.id = Date.now(); a.push(row); localStorage.setItem(table, JSON.stringify(a));
     }
+    refreshAll();
     return data;
   } catch(e) {
-    let a = await dbGet(table); row.id = Date.now(); a.push(row); localStorage.setItem(table, JSON.stringify(a)); return row;
+    let a = await dbGet(table); row.id = Date.now(); a.push(row); localStorage.setItem(table, JSON.stringify(a));
+    refreshAll();
+    return row;
   }
 }
 
 async function dbUpdate(table, id, row) {
-  if(!sb) { let a = await dbGet(table); a = a.map(x => x.id === id ? {...x,...row} : x); localStorage.setItem(table, JSON.stringify(a)); return true; }
+  if(!sb) { let a = await dbGet(table); a = a.map(x => x.id === id ? {...x,...row} : x); localStorage.setItem(table, JSON.stringify(a)); refreshAll(); return true; }
   try {
     let {error} = await sb.from(table).update(row).eq('id', id);
     if(error) {
       console.warn("Supabase Update Warning:", error.message);
-      let a = await dbGet(table); a = a.map(x => x.id === id ? {...x,...row} : x); localStorage.setItem(table, JSON.stringify(a)); return true;
+      let a = await dbGet(table); a = a.map(x => x.id === id ? {...x,...row} : x); localStorage.setItem(table, JSON.stringify(a));
     }
+    refreshAll();
     return true;
   } catch(e) {
-    let a = await dbGet(table); a = a.map(x => x.id === id ? {...x,...row} : x); localStorage.setItem(table, JSON.stringify(a)); return true;
+    let a = await dbGet(table); a = a.map(x => x.id === id ? {...x,...row} : x); localStorage.setItem(table, JSON.stringify(a));
+    refreshAll();
+    return true;
   }
 }
 
 async function dbDelete(table, id) {
-  if(!sb) { let a = await dbGet(table); a = a.filter(x => x.id !== id); localStorage.setItem(table, JSON.stringify(a)); return true; }
+  if(!sb) { let a = await dbGet(table); a = a.filter(x => x.id !== id); localStorage.setItem(table, JSON.stringify(a)); refreshAll(); return true; }
   try {
     let {error} = await sb.from(table).delete().eq('id', id);
     if(error) {
       console.warn("Supabase Delete Warning:", error.message);
-      let a = await dbGet(table); a = a.filter(x => x.id !== id); localStorage.setItem(table, JSON.stringify(a)); return true;
+      let a = await dbGet(table); a = a.filter(x => x.id !== id); localStorage.setItem(table, JSON.stringify(a));
     }
+    refreshAll();
     return true;
   } catch(e) {
-    let a = await dbGet(table); a = a.filter(x => x.id !== id); localStorage.setItem(table, JSON.stringify(a)); return true;
+    let a = await dbGet(table); a = a.filter(x => x.id !== id); localStorage.setItem(table, JSON.stringify(a));
+    refreshAll();
+    return true;
   }
 }
 
@@ -417,13 +428,11 @@ async function changeStatus(i, value){
   } else {
     await dbUpdate('uwu_orders', o.dbId, { status: value });
   }
-  refreshAll();
 }
 
 async function deleteOrder(dbId){
   if(confirm("ต้องการลบออเดอร์นี้ใช่ไหม 🐱?")) {
     await dbDelete('uwu_orders', dbId);
-    refreshAll();
   }
 }
 
@@ -484,7 +493,6 @@ async function confirmNewOrder(){
 
   await dbInsert('uwu_orders', row);
   closeOrderModal();
-  refreshAll();
 }
 
 // เมนู
@@ -539,13 +547,11 @@ async function saveMenu(){
     await dbInsert('uwu_menus', { name: n, price: p, description: extraDesc });
   }
   closeMenuModal();
-  refreshAll();
 }
 
 async function deleteMenu(dbId){
   if(confirm("ลบเมนูนี้ใช่ไหม?")){
     await dbDelete('uwu_menus', dbId);
-    refreshAll();
   }
 }
 
@@ -557,12 +563,10 @@ function renderTables(){
 async function addTable(){
   let newName = "T" + String(tables.length+1).padStart(2,"0");
   await dbInsert('uwu_tables', { name: newName });
-  refreshAll();
 }
 async function deleteTable(dbId){
   if(confirm("ต้องการลบโต๊ะนี้ทิ้งใช่ไหม?")){
     await dbDelete('uwu_tables', dbId);
-    refreshAll();
   }
 }
 
