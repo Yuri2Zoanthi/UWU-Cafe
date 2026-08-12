@@ -223,11 +223,12 @@ let realtimeChannel = null;
 if (window.SUPABASE_CONFIG.url && window.supabase) {
   sb = supabase.createClient(window.SUPABASE_CONFIG.url, window.SUPABASE_CONFIG.publishableKey);
   
-  // Realtime Listener ฟังการเปลี่ยนแปลงจากทุกตารางของ uwu
-  realtimeChannel = sb.channel('uwu-realtime')
+  // Realtime Broadcast Listener กระจายสัญญาณหาทุกเครื่องแบบ Real-time
+  realtimeChannel = sb.channel('uwu-realtime', { config: { broadcast: { self: true } } })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'uwu_tables' }, () => refreshAll())
     .on('postgres_changes', { event: '*', schema: 'public', table: 'uwu_menus' }, () => refreshAll())
     .on('postgres_changes', { event: '*', schema: 'public', table: 'uwu_orders' }, () => refreshAll())
+    .on('broadcast', { event: 'sync_event' }, () => refreshAll())
     .subscribe();
 } else {
   document.getElementById('offlineIndicator').style.display = 'inline-block';
@@ -235,6 +236,17 @@ if (window.SUPABASE_CONFIG.url && window.supabase) {
 
 // Data Arrays
 let tables = [], menus = [], orders = [], staff = [], completedOrders = [];
+
+// ฟังก์ชันส่งสัญญาณ Realtime หาเครื่องอื่นเมื่อมีการเปลี่ยนข้อมูล
+function notifyRealtimeChange() {
+  if (realtimeChannel) {
+    realtimeChannel.send({
+      type: 'broadcast',
+      event: 'sync_event',
+      payload: { timestamp: Date.now() }
+    });
+  }
+}
 
 // Safe DB Helper Functions
 async function dbGet(table) {
@@ -255,7 +267,11 @@ async function dbGet(table) {
 }
 
 async function dbInsert(table, row) {
-  if(!sb) { let a = await dbGet(table); row.id = Date.now(); a.push(row); localStorage.setItem(table, JSON.stringify(a)); refreshAll(); return row; }
+  if(!sb) { 
+    let a = await dbGet(table); row.id = Date.now(); a.push(row); 
+    localStorage.setItem(table, JSON.stringify(a)); 
+    refreshAll(); notifyRealtimeChange(); return row; 
+  }
   try {
     let {data, error} = await sb.from(table).insert(row).select().single();
     if(error) {
@@ -263,16 +279,22 @@ async function dbInsert(table, row) {
       let a = await dbGet(table); row.id = Date.now(); a.push(row); localStorage.setItem(table, JSON.stringify(a));
     }
     refreshAll();
+    notifyRealtimeChange();
     return data;
   } catch(e) {
     let a = await dbGet(table); row.id = Date.now(); a.push(row); localStorage.setItem(table, JSON.stringify(a));
     refreshAll();
+    notifyRealtimeChange();
     return row;
   }
 }
 
 async function dbUpdate(table, id, row) {
-  if(!sb) { let a = await dbGet(table); a = a.map(x => x.id === id ? {...x,...row} : x); localStorage.setItem(table, JSON.stringify(a)); refreshAll(); return true; }
+  if(!sb) { 
+    let a = await dbGet(table); a = a.map(x => x.id === id ? {...x,...row} : x); 
+    localStorage.setItem(table, JSON.stringify(a)); 
+    refreshAll(); notifyRealtimeChange(); return true; 
+  }
   try {
     let {error} = await sb.from(table).update(row).eq('id', id);
     if(error) {
@@ -280,16 +302,22 @@ async function dbUpdate(table, id, row) {
       let a = await dbGet(table); a = a.map(x => x.id === id ? {...x,...row} : x); localStorage.setItem(table, JSON.stringify(a));
     }
     refreshAll();
+    notifyRealtimeChange();
     return true;
   } catch(e) {
     let a = await dbGet(table); a = a.map(x => x.id === id ? {...x,...row} : x); localStorage.setItem(table, JSON.stringify(a));
     refreshAll();
+    notifyRealtimeChange();
     return true;
   }
 }
 
 async function dbDelete(table, id) {
-  if(!sb) { let a = await dbGet(table); a = a.filter(x => x.id !== id); localStorage.setItem(table, JSON.stringify(a)); refreshAll(); return true; }
+  if(!sb) { 
+    let a = await dbGet(table); a = a.filter(x => x.id !== id); 
+    localStorage.setItem(table, JSON.stringify(a)); 
+    refreshAll(); notifyRealtimeChange(); return true; 
+  }
   try {
     let {error} = await sb.from(table).delete().eq('id', id);
     if(error) {
@@ -297,10 +325,12 @@ async function dbDelete(table, id) {
       let a = await dbGet(table); a = a.filter(x => x.id !== id); localStorage.setItem(table, JSON.stringify(a));
     }
     refreshAll();
+    notifyRealtimeChange();
     return true;
   } catch(e) {
     let a = await dbGet(table); a = a.filter(x => x.id !== id); localStorage.setItem(table, JSON.stringify(a));
     refreshAll();
+    notifyRealtimeChange();
     return true;
   }
 }
